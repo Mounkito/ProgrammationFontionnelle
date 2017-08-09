@@ -1,8 +1,5 @@
-package functionnal;
+package functional;
 
-import functionnal.CashRegister;
-import functionnal.Price;
-import functionnal.Quantity;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;

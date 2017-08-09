@@ -1,6 +1,5 @@
-package functionnal;
+package functional;
 
-import functionnal.Quantity;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 

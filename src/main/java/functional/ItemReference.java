@@ -1,4 +1,4 @@
-package functionnal;
+package functional;
 
 public class ItemReference {
 

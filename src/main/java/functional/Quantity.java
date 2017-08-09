@@ -1,4 +1,4 @@
-package functionnal;
+package functional;
 
 import java.util.Objects;
 

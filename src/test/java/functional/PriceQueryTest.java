@@ -1,8 +1,5 @@
-package functionnal;
+package functional;
 
-import functionnal.ItemReference;
-import functionnal.Price;
-import functionnal.PriceQuery;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.assertj.core.api.Assertions;
@@ -10,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static functionnal.ItemReference.Builder.anItemReference;
+import static functional.ItemReference.Builder.anItemReference;
 
 @RunWith(JUnitParamsRunner.class)
 public class PriceQueryTest
