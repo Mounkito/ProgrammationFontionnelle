@@ -7,12 +7,12 @@ public class PriceQuery {
         this.itemReferences = itemReferences;
     }
 
-    public Price findPrice(String itemCode) {
+    public Result findPrice(String itemCode) {
         for (ItemReference itemReference: itemReferences) {
            if(itemReference.matcheSoughtItemCode(itemCode)) {
-               return itemReference.getUnitPrice();
+               return Result.found(itemReference.getUnitPrice());
            }
         }
-        return null;
+        return Result.notFound(itemCode);
     }
 }
