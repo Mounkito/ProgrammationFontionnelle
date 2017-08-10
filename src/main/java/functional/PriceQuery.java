@@ -1,5 +1,9 @@
 package functional;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.BiFunction;
+
 public class PriceQuery {
     private final ItemReference[] itemReferences;
 
@@ -8,11 +12,20 @@ public class PriceQuery {
     }
 
     public Result findPrice(String itemCode) {
-        for (ItemReference itemReference: itemReferences) {
-           if(itemReference.matchSoughtItemCode(itemCode)) {
-               return Result.found(itemReference.getUnitPrice());
-           }
+        return reduce(Result.notFound(itemCode),(Result result,ItemReference itemReference) -> {
+            if(itemReference.matchSoughtItemCode(itemCode)) {
+                return Result.found(itemReference.getUnitPrice());
+            }else{
+                return result;
+            }
+        } , Arrays.asList(itemReferences));
+    }
+
+    private <T, R> R reduce(R result, BiFunction<R, T, R> biFunction,
+                          List<T> itemReferences) {
+        for (T itemReference: itemReferences) {
+            result = biFunction.apply(result,itemReference);
         }
-        return Result.notFound(itemCode);
+        return result;
     }
 }
