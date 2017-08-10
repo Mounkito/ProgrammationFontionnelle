@@ -1,8 +1,9 @@
 package functional;
 
 import java.util.Objects;
+import java.util.function.UnaryOperator;
 
-public class Result {
+public abstract class Result {
 
     public static Result found(Price price) {
         return new Found(price);
@@ -11,6 +12,8 @@ public class Result {
     public static Result notFound(String itemCode) {
         return new NotFound(itemCode);
     }
+
+    public abstract Result map(UnaryOperator<Price> unaryOperator);
 
     private static class Found extends Result {
         private final Price price;
@@ -30,6 +33,11 @@ public class Result {
         @Override
         public int hashCode() {
             return Objects.hash(price);
+        }
+
+        @Override
+        public Result map(UnaryOperator<Price> unaryOperator) {
+            return Result.found(unaryOperator.apply(price));
         }
     }
 
@@ -51,6 +59,11 @@ public class Result {
         @Override
         public int hashCode() {
             return Objects.hash(itemCode);
+        }
+
+        @Override
+        public Result map(UnaryOperator<Price> unaryOperator) {
+            return null;
         }
     }
 }
