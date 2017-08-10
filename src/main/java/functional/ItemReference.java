@@ -14,7 +14,7 @@ public class ItemReference {
         return unitPrice;
     }
 
-    public boolean matcheSoughtItemCode(String itemCode) {
+    public boolean matchSoughtItemCode(String itemCode) {
         return itemCode.equals(this.itemCode);
     }
 
@@ -45,8 +45,7 @@ public class ItemReference {
         }
 
         public ItemReference build() {
-            ItemReference itemReference = new ItemReference(itemCode, unitPrice);
-            return itemReference;
+            return new ItemReference(itemCode, unitPrice);
         }
     }
 }

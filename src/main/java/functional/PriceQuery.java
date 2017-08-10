@@ -1,7 +1,7 @@
 package functional;
 
 public class PriceQuery {
-    private ItemReference[] itemReferences;
+    private final ItemReference[] itemReferences;
 
     public PriceQuery(ItemReference... itemReferences) {
         this.itemReferences = itemReferences;
@@ -9,7 +9,7 @@ public class PriceQuery {
 
     public Result findPrice(String itemCode) {
         for (ItemReference itemReference: itemReferences) {
-           if(itemReference.matcheSoughtItemCode(itemCode)) {
+           if(itemReference.matchSoughtItemCode(itemCode)) {
                return Result.found(itemReference.getUnitPrice());
            }
         }
