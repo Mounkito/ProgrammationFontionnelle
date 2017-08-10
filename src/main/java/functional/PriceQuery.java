@@ -1,8 +1,10 @@
 package functional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Predicate;
 
 public class PriceQuery {
     private final ItemReference[] itemReferences;
@@ -12,13 +14,20 @@ public class PriceQuery {
     }
 
     public Result findPrice(String itemCode) {
-        return reduce(Result.notFound(itemCode),(Result result,ItemReference itemReference) -> {
-            if(itemReference.matchSoughtItemCode(itemCode)) {
-                return Result.found(itemReference.getUnitPrice());
-            }else{
-                return result;
+        return reduce(Result.notFound(itemCode),
+                (result, itemReference) -> Result.found(itemReference.getUnitPrice()),
+                filter(itemReference -> itemReference.matchSoughtItemCode(itemCode),
+                        Arrays.asList(itemReferences)));
+    }
+
+    private <T> List<T> filter(Predicate<T> predicate, List<T> itemList) {
+        List<T> filteredList = new ArrayList<>();
+        for (T item: itemList) {
+            if (predicate.test(item)) {
+                filteredList.add(item);
             }
-        } , Arrays.asList(itemReferences));
+        }
+        return filteredList;
     }
 
     private <T, R> R reduce(R result, BiFunction<R, T, R> biFunction,
