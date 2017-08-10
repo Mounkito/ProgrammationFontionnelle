@@ -63,7 +63,7 @@ public abstract class Result {
 
         @Override
         public Result map(UnaryOperator<Price> unaryOperator) {
-            return null;
+            return this;
         }
     }
 }

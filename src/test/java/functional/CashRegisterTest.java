@@ -1,11 +1,15 @@
 package functional;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static functional.ItemReference.Builder.anItemReference;
 
+@RunWith(JUnitParamsRunner.class)
 public class CashRegisterTest {
     private CashRegister cashRegister;
     private PriceQuery priceQuery;
@@ -19,20 +23,16 @@ public class CashRegisterTest {
     }
 
     @Test
-    public void should_calculate_price_for_one_item() {
-        final Quantity quantity = Quantity.valueOf(1);
-        final Price totalPrice = Price.valueOf(1.20);
-
-        Result total = cashRegister.total(priceQuery.findPrice("APPLE"), quantity);
-        Assertions.assertThat(total).isEqualTo(Result.found(totalPrice));
-
+    @Parameters({"APPLE,1,1.20" , "BANANA,2,3.80"})
+    public void should_calculate_price_for_each_item(String itemCode, int quantity , double totalPrice) {
+        Result total = cashRegister.total(priceQuery.findPrice(itemCode), Quantity.valueOf(quantity));
+        Assertions.assertThat(total).isEqualTo(Result.found(Price.valueOf(totalPrice)));
     }
 
     @Test
-    public void should_calculate_price_for_two_item() {
-        final Price unitPrice = Price.valueOf(2.55);
-        final Quantity quantity = Quantity.valueOf(2);
-        final Price totalPrice = Price.valueOf(5.10);
-        Assertions.assertThat(cashRegister.total(unitPrice, quantity)).isEqualTo(totalPrice);
+    public void should_work_when_item_is_not_found(){
+        Result total = cashRegister.total(priceQuery.findPrice("PEACH"), Quantity.valueOf(1));
+        Assertions.assertThat(total).isEqualTo(Result.notFound("PEACH"));
+
     }
 }
