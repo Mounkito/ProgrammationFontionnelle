@@ -3,6 +3,7 @@ package functional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
@@ -13,11 +14,29 @@ public class PriceQuery {
         this.itemReferences = itemReferences;
     }
 
-    public Result findPrice(String itemCode) {
+    public Result findPriceTemp(String itemCode) {
         return reduce(Result.notFound(itemCode),
                 (result, itemReference) -> Result.found(itemReference.getUnitPrice()),
                 filter(itemReference -> itemReference.matchSoughtItemCode(itemCode),
                         Arrays.asList(itemReferences)));
+    }
+
+    public Result findPrice3(String itemCode){
+        Optional<ItemReference> itemReferenceOptional = Arrays.stream(itemReferences)
+                .filter(itemReference -> itemReference.matchSoughtItemCode(itemCode))
+                .findAny();
+        return itemReferenceOptional
+                .map(ItemReference::getUnitPrice)
+                .map(Result::found)
+                .orElse(Result.notFound(itemCode));
+    }
+
+    public Result findPrice(String itemCode) {
+        return Arrays.stream(itemReferences)
+                .filter(itemReference -> itemReference.matchSoughtItemCode(itemCode))
+                .reduce(Result.notFound(itemCode),
+                        (Result result, ItemReference itemReference) -> Result.found(itemReference.getUnitPrice()),
+                        (Result result, Result result2) -> Result.notFound(itemCode));
     }
 
     private <T> List<T> filter(Predicate<T> predicate, List<T> itemList) {
