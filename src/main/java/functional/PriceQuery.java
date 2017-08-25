@@ -21,7 +21,7 @@ public class PriceQuery {
                         Arrays.asList(itemReferences)));
     }
 
-    public Result findPrice3(String itemCode){
+    public Result findPrice(String itemCode){
         return Arrays.stream(itemReferences)
                 .filter(itemReference -> itemReference.matchSoughtItemCode(itemCode))
                 .map(ItemReference::getUnitPrice)
@@ -30,7 +30,7 @@ public class PriceQuery {
                 .orElse(Result.notFound(itemCode));
     }
 
-    public Result findPrice(String itemCode) {
+    public Result findPrice3(String itemCode) {
         return Arrays.stream(itemReferences)
                 .filter(itemReference -> itemReference.matchSoughtItemCode(itemCode))
                 .reduce(Result.notFound(itemCode),

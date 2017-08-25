@@ -30,4 +30,11 @@ class Price {
     public int hashCode() {
         return Objects.hash(price);
     }
+
+    @Override
+    public String toString() {
+        return "Price{" +
+                "price=" + price +
+                '}';
+    }
 }
