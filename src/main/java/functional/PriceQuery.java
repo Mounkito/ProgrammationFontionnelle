@@ -22,12 +22,11 @@ public class PriceQuery {
     }
 
     public Result findPrice3(String itemCode){
-        Optional<ItemReference> itemReferenceOptional = Arrays.stream(itemReferences)
+        return Arrays.stream(itemReferences)
                 .filter(itemReference -> itemReference.matchSoughtItemCode(itemCode))
-                .findAny();
-        return itemReferenceOptional
                 .map(ItemReference::getUnitPrice)
                 .map(Result::found)
+                .findAny()
                 .orElse(Result.notFound(itemCode));
     }
 
